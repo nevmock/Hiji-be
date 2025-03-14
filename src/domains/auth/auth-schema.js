@@ -39,21 +39,43 @@ const registerSchema = Joi.object({
             "string.min": "Password must be at least 8 characters long.",
             "string.pattern.base": "Password must be at least 8 characters long, contain at least 1 uppercase letter, and 1 special character."
         }),
-    phone_number : Joi.string()
+    phone_number: Joi.string()
         .required()
-        .pattern(/^[0-9]{10,}$/)
+        .pattern(/^\+62[0-9]{9,}$/)
         .messages({
             "string.empty": "Phone number is required.",
-            "string.pattern.base": "Phone number must be at least 10 characters long."
+            "string.pattern.base": "Phone number must start with +62 and be at least 11 digits long."
         }),
-    })
+    });
 
 const profileSchema = Joi.object({
-    name : Joi.string().required().min(4)
+    name : Joi.string().optional().min(4)
         .messages({
             "string.empty": "Name is required.",
             "string.min": "Name must be at least 4 characters long."
+    }),
+    old_password: Joi.string().optional(),
+    new_password: Joi.string()
+        .when("old_password", {
+            is: Joi.exist(),
+            then: Joi.required(),
+        })
+        .min(8)
+        .pattern(/^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/)
+        .messages({
+            "string.min": "Password must be at least 8 characters long.",
+            "string.pattern.base": "Password must be at least 8 characters long, contain at least 1 uppercase letter, and 1 special character.",
+            "any.required": "New password is required when old password is provided."
         }),
-}) 
+    confirm_password: Joi.string().optional().valid(Joi.ref("new_password"))
+        .messages({
+            "any.only": "Passwords do not match."
+        }),
+    phone_number: Joi.string().required().pattern(/^\+62[0-9]{9,}$/)
+        .messages({
+            "string.empty": "Phone number is required.",
+            "string.pattern.base": "Phone number must start with +62 and be at least 11 digits long."
+        }),
+    })
 
 export { loginSchema, registerSchema, profileSchema };
