@@ -83,7 +83,7 @@ class AuthService {
             throw new joi.ValidationError(validation, stack);
         }
 
-        const user = new User({name: data.name, username: data.username, email: data.email, password: data.password});
+        const user = new User(data);
         
         const createdUser = await user.save();
 

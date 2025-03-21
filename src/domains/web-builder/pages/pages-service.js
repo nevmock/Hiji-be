@@ -77,7 +77,7 @@ class PagesService {
                 const createSubdomainService = await axios.post(`${process.env.DOMAIN_SERVICE_URL}/domain`, { 
                     user_id: user_id,
                     business_id: bussiness.id,
-                    domain: `${sub_domain}-test`
+                    domain: `${sub_domain}`
                 })
 
                 console.log(createSubdomainService);

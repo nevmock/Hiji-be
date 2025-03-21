@@ -61,6 +61,11 @@ class BussinessService {
         }
 
         Promise.all([
+            axios.delete(`${process.env.BASE_URL}/api/domain`, {
+                user_id: user_id,
+                business_id: id,
+                domain: bussiness.sub_domain_default
+            }),
             Bussiness.deleteOne({
                 _id: id
             }),

@@ -11,15 +11,14 @@ const loginSchema = Joi.object({
         .messages({
             "string.empty": "Password is required."
         })
-});
+    });
 
 const registerSchema = Joi.object({
     name: Joi.string().required().min(4)
-        .pattern(/^[A-Za-z\s]+$/)
         .messages({
             "string.empty": "Name is required.",
             "string.min": "Name must be at least 4 characters long.",
-            "string.pattern.base": "Name can only contain letters and spaces."
+            "string..base": "Name can only contain letters and spaces."
         }),
 
     username: Joi.string().required().min(4)
@@ -46,11 +45,11 @@ const registerSchema = Joi.object({
             "string.pattern.base": "Password must be at least 8 characters long, contain at least 1 uppercase letter, and 1 special character."
         }),
     phone_number: Joi.string()
+        .pattern(/^\+628\d{8,}$/) // Ensures it starts with +628 and has at least 11 digits
         .required()
-        .pattern(/^\+62[0-9]{9,}$/)
         .messages({
             "string.empty": "Phone number is required.",
-            "string.pattern.base": "Phone number must start with +62 and be at least 11 digits long."
+            "string.pattern.base": "Phone number must start with +628 and be at least 11 digits long."
         }),
     address: Joi.string().required()
         .messages({
@@ -65,10 +64,9 @@ const profileSchema = Joi.object({
             "string.empty": "Name is required.",
             "string.min": "Name must be at least 4 characters long."
     }),
-    phone_number: Joi.string().optional().pattern(/^\+62[0-9]{9,}$/)
+    phone_number: Joi.string().optional()
         .messages({
             "string.empty": "Phone number is required.",
-            "string.pattern.base": "Phone number must start with +62 and be at least 11 digits long."
         }),
     })
 

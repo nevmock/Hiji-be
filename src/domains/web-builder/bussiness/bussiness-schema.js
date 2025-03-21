@@ -29,25 +29,7 @@ const bussinessSchema = Joi.object({
         .messages({
             "string.empty": "Address is required."
         }),
-});
-
-const bussinessUpdateSchema = Joi.object({
-    bussiness_name: Joi.string().min(4)
-        .messages({
-            "string.min": "Bussiness name must be at least 4 characters long."
-        }),
-    phone_number: Joi.string()
-        .pattern(/^\+62\d{9,13}$/)
-        .messages({
-          "string.pattern.base": "Phone number must start with +62 and be between 10 to 15 digits long",
-      }),
-    email: Joi.string()
-        .email()
-        .messages({
-            "string.email": "Email must be a valid email address."
-        }),
-    location_id: Joi.string(),
-    address: Joi.string()
+    
 });
 
 export { bussinessSchema };
