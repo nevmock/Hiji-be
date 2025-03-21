@@ -106,18 +106,16 @@ class AuthService {
     }
 
     async verify(token) {
-        const userId = parseJWT(token);
+        const { user_id } = parseJWT(token);
 
-        console.log(userId)
-
-        if (!userId) {
+        if (!user_id) {
             return { status: 400, message: "Invalid token" };
         }
 
-        const user = await User.findById(userId.id);
+        const user = await User.findById(user_id);
 
         if (!user) {
-            return { status: 400, message: "Not Found" }
+            return { status: 400, message: "User Not Found" }
         }
 
         if (user.verifiedAt){
