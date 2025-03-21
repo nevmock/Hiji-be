@@ -22,6 +22,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    phone_number: {
+        type: String,
+        required: true,
+    },
     profile_uri: {
         type: String,
         default: null,
