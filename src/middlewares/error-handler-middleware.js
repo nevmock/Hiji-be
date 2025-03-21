@@ -12,7 +12,7 @@ export const errorHandler = (err, req, res, _next) => {
 
   if (err.name === "ValidationError") {
     const errorObj = {};
-
+    console.log(err);
     for (const error of err.details) {
       errorObj[error.path] = [error.message];
     }
@@ -29,6 +29,8 @@ export const errorHandler = (err, req, res, _next) => {
       },
     });
   }
+
+  console.log(err);
 
   //   if (err.name == "SequelizeValidationError") {
   //     return res.status(400).json(err);

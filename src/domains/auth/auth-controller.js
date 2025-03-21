@@ -15,9 +15,9 @@ class AuthController {
     }
 
     async register(req, res) {
-        const { name, username, email, password, phone_number } = req.body;
+        const { name, username, email, password, phone_number, address } = req.body;
 
-        const message = await AuthService.register({ name, username, email, password, phone_number });
+        const message = await AuthService.register({ name, username, email, password, phone_number, address });
 
         if (!message) {
             throw Error("Failed to register");
@@ -59,6 +59,18 @@ class AuthController {
         }
 
         return successResponse(res, user);
+    }
+
+    async updatePassword(req, res){
+        const { old_password, new_password } = req.body;
+
+        const message = await AuthService.updatePasswordProfile(req.app.locals.user.id, old_password, new_password);
+
+        if (!message) {
+            throw Error("Failed to update user password");
+        }
+
+        return successResponse(res, message);
     }
 }
 

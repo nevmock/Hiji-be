@@ -16,6 +16,8 @@ import path from "path";
 import connectDB from "./config/db.js";
 
 import AuthRoutes from "./domains/auth/auth-routes.js";
+import BussinessRoutes from "./domains/web-builder/bussiness/bussiness-routes.js";
+import PagesRoutes from "./domains/web-builder/pages/pages-routes.js";
 
 class ExpressApplication {
     app;
@@ -84,8 +86,10 @@ class ExpressApplication {
     setupRoute() {
         // Set Route here
         // this.app.use("/api/v1/menu", menuRoutes);
-
+        
         this.app.use("/api/v1/auth", AuthRoutes);
+        this.app.use("/api/v1/bussiness", BussinessRoutes);
+        this.app.use("/api/v1/pages", PagesRoutes);
     }
 
     configureAssets() {

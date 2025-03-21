@@ -17,7 +17,11 @@ class BaseError extends Error {
   }
 
   static unauthorized(message = "Unauthorized") {
-    return new BaseError(statusCodes.UNAUTHORIZED.code, statusCodes.UNAUTHORIZED.message, "Unauthorized", message);
+    return new BaseError(statusCodes.UNAUTHORIZED.code, statusCodes.UNAUTHORIZED.message, "UNAUTHORIZED", message);
+  }
+
+  static forbidden(message = "Forbidden") {
+    return new BaseError(statusCodes.FORBIDDEN.code, statusCodes.FORBIDDEN.message, "Forbidden", message);
   }
 }
 

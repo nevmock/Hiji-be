@@ -54,6 +54,8 @@ const authToken = (req, res, next) => {
 
             req.app.locals.user = user;
 
+            // console.log(req.app.locals.user);
+
             return next();
         },
     );

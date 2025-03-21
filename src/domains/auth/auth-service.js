@@ -5,6 +5,7 @@ import generateToken from "../../utils/generateToken.js";
 import sendEmail from "../../utils/sendEmail.js";
 import { parseJWT } from "../../utils/parseToken.js";
 import joi from "joi";
+import Bussiness from "../../models/bussiness.js";
 
 class AuthService {
     async login(username, password) {
@@ -27,8 +28,6 @@ class AuthService {
         if (!isMatch) {
             throw BaseError.badRequest("Invalid credentials");
         }
-
-        
 
         if (!user.verifiedAt){
             const token = generateToken(user._id, "5m");
@@ -59,11 +58,7 @@ class AuthService {
             email: data.email
         })
 
-        const phoneExist = await User.findOne({
-            phone_number: data.phone_number
-        })
-
-        if (usernameExist || emailExist || phoneExist) {
+        if (usernameExist || emailExist) {
             let validation = "";
             let stack = [];
 
@@ -85,22 +80,13 @@ class AuthService {
                 });
             }
 
-            if (phoneExist) {
-                validation += "Phone number already taken.";
-
-                stack.push({
-                    message: "Phone number already taken.",
-                    path: ["phone_number"]
-                });
-            }
-
             throw new joi.ValidationError(validation, stack);
         }
 
-        const user = new User(data);
+        const user = new User({name: data.name, username: data.username, email: data.email, password: data.password});
         
         const createdUser = await user.save();
-        
+
         if (!createdUser) {
             throw Error("Failed to register");
         }
@@ -172,6 +158,29 @@ class AuthService {
             );
 
         return updatedUser;
+    }
+
+    async updatePasswordProfile(id, oldPassword, newPassword) {
+        const user = await User.findById(id);
+
+        if (!user) {
+            throw BaseError.notFound("User not found");
+        }
+
+        const isMatch = await user.matchPassword(oldPassword);
+
+        if (!isMatch) {
+            throw new joi.ValidationError("Wrong Password", [{'message': 'Wrong Password', 'path': ['old_password']}]);
+        }
+
+        if (oldPassword === newPassword) {
+            throw new joi.ValidationError("New password cannot be the same as the old password", [{'message': 'New password cannot be the same as the old password', 'path': ['new_password']}]);
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        return { message: "Password updated successfully" };
     }
 }
 
