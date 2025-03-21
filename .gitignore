@@ -132,4 +132,4 @@ dist
 .pnp.*
 
 # public
-public/web-builder/*
+public/web-builder

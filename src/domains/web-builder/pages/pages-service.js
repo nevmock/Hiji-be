@@ -66,11 +66,25 @@ class PagesService {
             let sub_domain = await subDomainGenerator(bussiness.bussiness_name);
 
             console.log(sub_domain);
-            // await axios.post(`${process.env.DOMAIN_SERVICE_URL}`, {
-            //     ip: "109.123.232.99", 
-            //     subdomain: sub_domain, 
-            //     web_path:"/home/rahman/HijiData/username1/project-1"
-            // })
+
+            console.log({
+                user_id: user_id,
+                    business_id: bussiness.id,
+                    domain: sub_domain
+            });
+
+            try {
+                const createSubdomainService = await axios.post(`${process.env.DOMAIN_SERVICE_URL}/domain`, { 
+                    user_id: user_id,
+                    business_id: bussiness.id,
+                    domain: `${sub_domain}-test`
+                })
+
+                console.log(createSubdomainService);
+                
+            } catch (error) {
+                console.log(error);
+            }
 
             await Bussiness.findByIdAndUpdate(
                 bussiness_id, {
@@ -81,7 +95,7 @@ class PagesService {
         }
         
         const pages = new Page({ 
-            bussiness_id : bussiness_id,   
+            bussiness_id : bussiness_id,
             slug : defaultSlug,
         });
 
@@ -91,7 +105,7 @@ class PagesService {
             throw new Error("Failed to create pages");
         }
 
-        const pagesPath = `public/web-builder/${bussiness.user_id}/${bussiness.id}/${createdPages._id}`;
+        const pagesPath = `${process.env.BASE_PATH_PREFIX}/${bussiness.user_id}/${bussiness.id}/${createdPages._id}`;
 
         await createPageDirectory(pagesPath);
 
