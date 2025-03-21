@@ -67,7 +67,7 @@ class BussinessService {
             Page.deleteMany({
                 bussiness_id: id
             }),
-            deletePageDirectory(`public/web-builder/${user_id}/${id}`)
+            deletePageDirectory(`${process.env.BASE_PATH_PREFIX}/${user_id}/${id}`)
         ]);
 
         return true;
