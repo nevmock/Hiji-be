@@ -60,39 +60,6 @@ class PagesService {
         if (countFoundSlug > 0) {
             defaultSlug += `-${countFoundSlug}`
         }
-
-        if (!bussiness.sub_domain_default && countTotalPage == 0) {
-            // call api from mas rahman
-            let sub_domain = await subDomainGenerator(bussiness.bussiness_name);
-
-            console.log(sub_domain);
-
-            console.log({
-                user_id: user_id,
-                    business_id: bussiness.id,
-                    domain: sub_domain
-            });
-
-            try {
-                const createSubdomainService = await axios.post(`${process.env.DOMAIN_SERVICE_URL}/domain`, { 
-                    user_id: user_id,
-                    business_id: bussiness.id,
-                    domain: `${sub_domain}`
-                })
-
-                console.log(createSubdomainService);
-                
-            } catch (error) {
-                console.log(error);
-            }
-
-            await Bussiness.findByIdAndUpdate(
-                bussiness_id, {
-                    sub_domain_default: sub_domain
-                },
-                { new: true }
-            )
-        }
         
         const pages = new Page({ 
             bussiness_id : bussiness_id,
@@ -110,6 +77,39 @@ class PagesService {
         await createPageDirectory(pagesPath);
 
         // make me create directory to public/{user_id}/{bussiness_id}/{page_id} for the page
+
+        if (!bussiness.sub_domain_default && countTotalPage == 0) {
+            // call api from mas rahman
+            let sub_domain = await subDomainGenerator(bussiness.bussiness_name);
+
+            console.log(sub_domain);
+
+            console.log({
+                user_id: user_id,
+                    business_id: bussiness.id,
+                    domain: sub_domain
+            });
+
+            try {
+                const createSubdomainService = await axios.post(`${process.env.DOMAIN_SERVICE_URL}/domain`, { 
+                    user_id: user_id,
+                    business_id: bussiness.id,
+                    domain: `${sub_domain}`,
+                })
+
+                console.log(createSubdomainService);
+                
+            } catch (error) {
+                console.log(error);
+            }
+
+            await Bussiness.findByIdAndUpdate(
+                bussiness_id, {
+                    sub_domain_default: sub_domain
+                },
+                { new: true }
+            )
+        }
 
         const updatedPage = await Page.findByIdAndUpdate(
             createdPages._id, {
@@ -159,7 +159,7 @@ class PagesService {
         if (!page) {
             throw BaseError.notFound("Page not found");
         }
-        
+
         await Promise.all([
             Page.findByIdAndDelete(id),
             deletePageDirectory(page.assets_uri)
