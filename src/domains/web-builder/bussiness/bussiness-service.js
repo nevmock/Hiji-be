@@ -62,11 +62,6 @@ class BussinessService {
         }
 
         Promise.all([
-            axios.delete(`${process.env.BASE_URL}/api/domain`, {
-                user_id: user_id,
-                business_id: id,
-                domain: bussiness.sub_domain_default
-            }),
             Bussiness.deleteOne({
                 _id: id
             }),
@@ -75,6 +70,18 @@ class BussinessService {
             }),
             deletePageDirectory(`${process.env.BASE_PATH_PREFIX}/${user_id}/${id}`)
         ]);
+
+        try {
+            const response = await axios.delete(`${process.env.BASE_URL}/api/domain`, {
+                user_id: user_id,
+                business_id: id,
+                domain: bussiness.sub_domain_default
+            })
+
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
 
         return true;
     }

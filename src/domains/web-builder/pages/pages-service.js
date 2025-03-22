@@ -159,7 +159,7 @@ class PagesService {
         if (!page) {
             throw BaseError.notFound("Page not found");
         }
-
+        
         await Promise.all([
             Page.findByIdAndDelete(id),
             deletePageDirectory(page.assets_uri)
