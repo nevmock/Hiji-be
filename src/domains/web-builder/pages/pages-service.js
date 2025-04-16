@@ -86,8 +86,8 @@ class PagesService {
 
             console.log({
                 user_id: user_id,
-                    business_id: bussiness.id,
-                    domain: sub_domain
+                business_id: bussiness.id,
+                domain: sub_domain
             });
 
             try {
