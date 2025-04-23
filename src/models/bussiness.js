@@ -56,6 +56,11 @@ const BussinessSchema = new mongoose.Schema({
         required: false,
         default: null
     },
+    dns_id: {
+        type: String,
+        required: false,
+        default: null
+    },
     domain: {
         type: String,
         required: false,

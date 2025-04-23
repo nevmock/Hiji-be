@@ -3,6 +3,7 @@ import BaseError from "../../../base_classes/base-error.js";
 import Bussiness from "../../../models/bussiness.js";
 import Page from "../../../models/page.js";
 import deletePageDirectory from "../../../utils/deletePageDirectory.js";
+import subDomainGenerator from "../../../utils/subDomainGenerator.js";
 
 class BussinessService {
     async get(user_id){
@@ -29,15 +30,37 @@ class BussinessService {
     }
 
     async create({ user_id, bussiness_name, phone_number, email, location_id, address }) {
+        
         const bussiness = new Bussiness({ user_id, bussiness_name, phone_number, email, location_id, address });
-
+        
         const createdBussiness = await bussiness.save();
 
         if (!createdBussiness) {
             throw new Error("Failed to create bussiness");
         }
 
-        return createdBussiness;
+        const sub_domain_default = await subDomainGenerator(bussiness_name);
+
+        const dnsData = await this.createDns(user_id, createdBussiness._id ,sub_domain_default);
+        if (!dnsData) {
+            throw new Error("Failed to create dns");
+        }
+
+        const updatedBussiness = await Bussiness.findOneAndUpdate(
+            { _id: createdBussiness._id },
+            {
+                sub_domain_default,
+                dns_id: dnsData.dnsRecordId,
+                domain: process.env.DOMAIN
+            },
+            { new: true } 
+        );
+        
+        if (!updatedBussiness) {
+            throw new Error("Failed to update subdomain bussiness");
+        }
+        
+        return updatedBussiness;
     }
 
     async update(user_id, id, data){
@@ -68,22 +91,47 @@ class BussinessService {
             Page.deleteMany({
                 bussiness_id: id
             }),
-            deletePageDirectory(`${process.env.BASE_PATH_PREFIX}/${user_id}/${id}`)
+            deletePageDirectory(`${process.env.BASE_PATH_PREFIX}/${user_id}/${id}`),
+            this.deleteDns(bussiness.dns_id)
         ]);
 
+        return {
+            message: "Bussiness deleted successfully",
+        };
+    }
+
+    async createDns(user_id, bussiness_id, sub_domain_default) {
         try {
-            const response = await axios.delete(`${process.env.BASE_URL}/api/domain`, {
+            const response = await axios.post(`${process.env.DOMAIN_SERVICE_URL}/v1/subdomain`, {
                 user_id: user_id,
-                business_id: id,
-                domain: bussiness.sub_domain_default
+                business_id: bussiness_id,
+                name: `${sub_domain_default}`,
             })
 
-            console.log(response);
+            // console.log(response.data.data);
+
+            return response.data.data.data;
         } catch (error) {
+            console.log("Error create dns:");
             console.log(error);
         }
+    }
 
-        return true;
+    async deleteDns(dns_id) {
+        try {
+            const response = await axios.delete(`${process.env.DOMAIN_SERVICE_URL}/v1/subdomain`, {
+                data: {
+                    dns_id: dns_id,
+                },
+            })
+
+            console.log(response.data.data);
+
+            return response.data.data.data;
+        } catch (error) {
+            console.log("Error delete dns:");
+            console.log(error);
+        }
     }
 }
 
