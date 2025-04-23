@@ -92,7 +92,7 @@ class BussinessService {
                 bussiness_id: id
             }),
             deletePageDirectory(`${process.env.BASE_PATH_PREFIX}/${user_id}/${id}`),
-            this.deleteDns(bussiness.dns_id)
+            this.deleteDns(bussiness.dns_id, bussiness.sub_domain_default)
         ]);
 
         return {
@@ -117,10 +117,11 @@ class BussinessService {
         }
     }
 
-    async deleteDns(dns_id) {
+    async deleteDns(dns_id, sub_domain_default) {
         try {
             const response = await axios.delete(`${process.env.DOMAIN_SERVICE_URL}/v1/subdomain`, {
                 data: {
+                    name: sub_domain_default,
                     dns_id: dns_id,
                 },
             })
