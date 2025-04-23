@@ -82,6 +82,12 @@ class PagesService {
             { new: true }
         )
 
+        if (!updatedPage) {
+            throw new Error("Failed to update pages");
+        }
+
+        await this.addSlugService(bussiness.sub_domain_default, bussiness.user_id, bussiness.id, defaultSlug, createdPages._id);
+
         return updatedPage;
     }
 
@@ -98,10 +104,16 @@ class PagesService {
             throw BaseError.notFound("Page not found");
         }
 
+        if (data.slug != page.slug) {
+            this.deleteSlugService(bussiness.sub_domain_default, page.slug);
+            this.addSlugService(bussiness.sub_domain_default, bussiness.user_id, bussiness.id, data.slug, id);
+        }
+
         const [updatedPage] = await Promise.all([
             Page.findByIdAndUpdate(
                 id, {
-                    grapes_config: data.grapes_config
+                    grapes_config: data.grapes_config,
+                    slug: data.slug,
                 },
                 { new: true }
             ),
@@ -126,10 +138,48 @@ class PagesService {
 
         await Promise.all([
             Page.findByIdAndDelete(id),
-            deletePageDirectory(page.assets_uri)
+            deletePageDirectory(page.assets_uri),
+            this.deleteSlugService(bussiness.sub_domain_default, page.slug)
         ]);
 
         return true;
+    }
+
+    async addSlugService(sub_domain_default, user_id, bussiness_id, slug, page_id) {
+        try {
+            const response = await axios.post(`${process.env.DOMAIN_SERVICE_URL}/v1/subdomain/slug`, {
+                user_id: user_id,
+                bussiness_id: bussiness_id,
+                name: sub_domain_default,
+                slug: slug,
+                page_id: page_id
+            });
+
+            console.log(response.data);
+
+            return response.data.data;
+        } catch (error) {
+            console.log("Error add slug service:");
+            console.log(error);
+        }
+    }
+
+    async deleteSlugService(sub_domain_default, slug) {
+        try {
+            const response = await axios.delete(`${process.env.DOMAIN_SERVICE_URL}/v1/subdomain/slug`, {
+                data: {
+                    name: sub_domain_default,
+                    slug: slug
+                }
+            });
+
+            console.log(response.data);
+
+            return response.data.data;
+        } catch (error) {
+            console.log("Error delete slug service:");
+            console.log(error);
+        }
     }
 }
 
