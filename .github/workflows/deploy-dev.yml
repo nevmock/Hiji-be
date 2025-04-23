@@ -23,9 +23,11 @@ jobs:
         echo MONGO_URI=${{ secrets.MONGO_URI }} >> .env
         echo EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }} >> .env
         echo EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} >> .env
+        echo BE_URL=${{ secrets.BE_URL }} >> .env
         echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
-        echo BE_URL=${{ vars.BE_URL }} >> .env
-        echo FE_URL=${{ vars.FE_URL }} >> .env
+        echo FE_URL=${{ secrets.FE_URL }} >> .env
+        echo BASE_PATH_PREFIX=${{ secrets.BASE_PATH_PREFIX }} >> .env
+        echo DOMAIN_SERVICE_PATH=${{ secrets.DOMAIN_SERVICE_PATH }} >> .env
     - name: Install dependencies
       run: npm install
     - name: Build project
@@ -44,10 +46,15 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
-          cd /home/rahman/BE_skillpractice
+          export NVM_DIR="/home/kanzen/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          nvm use 20
+
+          cd /home/kanzen/Hiji-be
           git reset --hard HEAD
           git pull origin main --rebase
           npm install
           npm run build          
-          sudo systemctl restart hiji-be.service
+          pm2 restart hiji-be:service
