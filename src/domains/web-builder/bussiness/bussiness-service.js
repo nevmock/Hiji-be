@@ -104,7 +104,7 @@ class BussinessService {
         try {
             const response = await axios.post(`${process.env.DOMAIN_SERVICE_URL}/v1/subdomain`, {
                 user_id: user_id,
-                business_id: bussiness_id,
+                bussiness_id: bussiness_id,
                 name: `${sub_domain_default}`,
             })
 
