@@ -52,6 +52,7 @@ jobs:
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           nvm use 20
 
+          
           cd /home/kanzen/Hiji-be
           git reset --hard HEAD
           git pull origin main --rebase
