@@ -105,8 +105,8 @@ class PagesService {
         }
 
         if (data.slug != page.slug) {
-            this.deleteSlugService(bussiness.sub_domain_default, page.slug);
-            this.addSlugService(bussiness.sub_domain_default, bussiness.user_id, bussiness.id, data.slug, id);
+            await this.deleteSlugService(bussiness.sub_domain_default, page.slug);
+            await this.addSlugService(bussiness.sub_domain_default, bussiness.user_id, bussiness.id, data.slug, id);
         }
 
         const [updatedPage] = await Promise.all([
