@@ -36,7 +36,7 @@ class PagesService {
             throw BaseError.notFound("Page not found");
         }
 
-        if (page.bussiness_id != bussiness_id) {
+        if (page.bussiness_id._id != bussiness_id) {
             throw BaseError.forbidden("Forbidden");
         }
 
