@@ -16,7 +16,7 @@ class PagesService {
         }
 
         const [pages, total] = await Promise.all([
-            Page.find({ bussiness_id }),
+            Page.find({ bussiness_id }).populate('bussiness_id'),
             Page.countDocuments({ bussiness_id })
         ]);
 
@@ -30,7 +30,7 @@ class PagesService {
             throw BaseError.notFound("Bussiness not found");
         }
 
-        const page = await Page.findById(id);
+        const page = await Page.findById(id).populate('bussiness_id');
 
         if (!page) {
             throw BaseError.notFound("Page not found");
