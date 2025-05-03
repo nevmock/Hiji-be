@@ -4,6 +4,8 @@ import path from 'path';
 const createOrUpdatePage = async (dirPath, htmlContent = null, cssContent = null) => {
     try {
         // Ensure the directory exists
+        const uniqueKey = Date.now(); // Unique key to avoid conflicts
+
         await fs.promises.mkdir(dirPath, { recursive: true });
 
         const indexPath = path.join(dirPath, 'index.html');
@@ -16,7 +18,7 @@ const createOrUpdatePage = async (dirPath, htmlContent = null, cssContent = null
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Page</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=${uniqueKey}">
 </head>
 <body>
     ${htmlContent || ''}

@@ -92,7 +92,7 @@ class PagesService {
     }
 
     async update(user_id, bussiness_id, id, data) {
-        console.log(data);
+
         const bussiness = await bussinessService.getById(bussiness_id, user_id);
 
         if (!bussiness) {
