@@ -6,6 +6,7 @@ import createPageDirectory from "../../../utils/createPageDirectory.js";
 import bussinessService from "../bussiness/bussiness-service.js";
 import deletePageDirectory from "../../../utils/deletePageDirectory.js";
 import subDomainGenerator from "../../../utils/subDomainGenerator.js";
+import mongoose from "mongoose";
 
 class PagesService {
     async get(user_id, bussiness_id) {
@@ -181,6 +182,17 @@ class PagesService {
             console.log("Error delete slug service:");
             console.log(error);
         }
+    }
+
+    async getTotalPagesByUser(user_id) {
+        const bussiness = await Bussiness.find({ user_id: user_id }, '_id');
+        const bussiness_ids = bussiness.map(b => b._id);
+
+        if (bussiness_ids.length === 0) {
+            return 0;
+        }
+
+        return await Page.countDocuments({ bussiness_id: { $in: bussiness_ids } });
     }
 }
 
