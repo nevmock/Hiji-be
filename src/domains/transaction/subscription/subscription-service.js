@@ -15,6 +15,10 @@ class SubscriptionService {
             throw new BaseError.badRequest("Plan not found");
         }
 
+        if (plan.is_active === false) {
+            throw new BaseError.badRequest("Plan is not available");
+        }
+
         const adminFee = Math.ceil(plan.price * 0.007);
         const grossAmount = plan.price + adminFee;
 
