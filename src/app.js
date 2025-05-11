@@ -21,6 +21,7 @@ import PagesRoutes from "./domains/web-builder/pages/pages-routes.js";
 import PlanRoutes from "./domains/plan/plan-routes.js";
 import subscriptionRoutes from "./domains/transaction/subscription/subscription-routes.js";
 import transactionRoutes from "./domains/transaction/transaction-routes.js";
+import pixelRoutes from "./domains/web-builder/pixel/pixel-routes.js";
 
 class ExpressApplication {
     app;
@@ -89,10 +90,11 @@ class ExpressApplication {
     setupRoute() {
         // Set Route here
         // this.app.use("/api/v1/menu", menuRoutes);
-        
-        this.app.use("/api/v1/auth", AuthRoutes);
-        this.app.use("/api/v1/bussiness", BussinessRoutes);
-        this.app.use("/api/v1/pages", PagesRoutes);
+
+        this.app.use("/api/v1/web-builder/auth", AuthRoutes);
+        this.app.use("/api/v1/web-builder/bussiness", BussinessRoutes);
+        this.app.use("/api/v1/web-builder/pages", PagesRoutes);
+        this.app.use("/api/v1/web-builder/pixel", pixelRoutes);
 
         this.app.use("/api/v1/plan", PlanRoutes);
         this.app.use("/api/v1/subscription", subscriptionRoutes);
