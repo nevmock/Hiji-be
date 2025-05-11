@@ -3,7 +3,6 @@ import BaseError from '../base_classes/base-error.js';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 
-
 const authToken = async (req, res, next) => {
    const authHeader = req.get('Authorization');
 
@@ -23,6 +22,7 @@ const authToken = async (req, res, next) => {
         const user = await User.findById(decoded.id, {
             password: 0,
         });
+        
         if (!user) {
             return next(
                 new BaseError(
@@ -61,7 +61,7 @@ const authToken = async (req, res, next) => {
                 )
             );
         }
-        }
+    }
 };
 
 export default authToken;

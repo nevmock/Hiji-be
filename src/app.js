@@ -91,7 +91,7 @@ class ExpressApplication {
         // Set Route here
         // this.app.use("/api/v1/menu", menuRoutes);
 
-        this.app.use("/api/v1/web-builder/auth", AuthRoutes);
+        this.app.use("/api/v1/auth", AuthRoutes);
         this.app.use("/api/v1/web-builder/bussiness", BussinessRoutes);
         this.app.use("/api/v1/web-builder/pages", PagesRoutes);
         this.app.use("/api/v1/web-builder/pixel", pixelRoutes);
