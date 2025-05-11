@@ -22,11 +22,11 @@ const createPlanSchema = Joi.object({
             "number.min": "Price must be at least 0.",
             "any.required": "Price is required."
         }),
-    level: Joi.number().min(0).max(1).required()
+    level: Joi.number().min(0).max(3).required()
         .messages({
             "number.base": "Level must be a number.",
             "number.min": "Level must be at least 0.",
-            "number.max": "Level must be at most 1.",
+            "number.max": "Level must be at most 3.",
             "any.required": "Level is required."
         }),
 });
