@@ -184,7 +184,7 @@ class PagesService {
         }
     }
 
-    async getTotalPagesByUser(user_id) {
+    async getTotalPagesByUserId(user_id) {
         const bussiness = await Bussiness.find({ user_id: user_id }, '_id');
         const bussiness_ids = bussiness.map(b => b._id);
 
