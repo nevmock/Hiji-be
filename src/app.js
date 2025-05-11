@@ -18,6 +18,9 @@ import connectDB from "./config/db.js";
 import AuthRoutes from "./domains/auth/auth-routes.js";
 import BussinessRoutes from "./domains/web-builder/bussiness/bussiness-routes.js";
 import PagesRoutes from "./domains/web-builder/pages/pages-routes.js";
+import PlanRoutes from "./domains/plan/plan-routes.js";
+import subscriptionRoutes from "./domains/transaction/subscription/subscription-routes.js";
+import transactionRoutes from "./domains/transaction/transaction-routes.js";
 
 class ExpressApplication {
     app;
@@ -90,6 +93,10 @@ class ExpressApplication {
         this.app.use("/api/v1/auth", AuthRoutes);
         this.app.use("/api/v1/bussiness", BussinessRoutes);
         this.app.use("/api/v1/pages", PagesRoutes);
+
+        this.app.use("/api/v1/plan", PlanRoutes);
+        this.app.use("/api/v1/subscription", subscriptionRoutes);
+        this.app.use("/api/v1/transaction", transactionRoutes);
     }
 
     configureAssets() {

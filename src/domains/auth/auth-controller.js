@@ -5,13 +5,13 @@ class AuthController {
     async login(req, res) {
         const { username, password } = req.body;
 
-        const token = await AuthService.login(username, password);
+        const response = await AuthService.login(username, password);
 
-        if (!token) {
+        if (!response) {
             throw Error("Failed to login");
         }
 
-        return successResponse(res, { token });
+        return successResponse(res, response);
     }
 
     async register(req, res) {
@@ -40,19 +40,19 @@ class AuthController {
     }
 
     async getProfile(req, res){
-        const user = await AuthService.getProfile(req.app.locals.user.id);
+        const user = req.user;
 
         if (!user) {
             throw Error("Failed to get user profile");
         }
-        
+
         return successResponse(res, user);
     }
 
     async updateProfile(req, res){
         const { name, email, phone_number } = req.body;
 
-        const user = await AuthService.updateProfile(req.app.locals.user.id, { name, email, phone_number });
+        const user = await AuthService.updateProfile(req.user.id, { name, email, phone_number });
 
         if (!user) {
             throw Error("Failed to update user profile");
@@ -71,6 +71,18 @@ class AuthController {
         }
 
         return successResponse(res, message);
+    }
+
+    async refreshToken(req, res) {
+        const { refresh_token } = req.body;
+
+        const token = await AuthService.refreshToken(refresh_token);
+
+        if (!token) {
+            throw Error("Failed to refresh token");
+        }
+
+        return successResponse(res, { access_token: token });
     }
 }
 

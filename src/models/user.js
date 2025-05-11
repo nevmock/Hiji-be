@@ -30,20 +30,19 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: null,
     },
-    verifiedAt: {
+    subs_expired_at: {
         type: Date,
         default: null,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
+    subs_level: {
+        type: Number,
+        default: 0,
     },
-    updatedAt: {
+    verifiedAt: {
         type: Date,
-        default: Date.now,
+        default: null,
     }
-},
-{ timestamps: true });
+}, { timestamps: true });
 
 UserSchema.pre("save", async function(next){
     if(!this.isModified("password")){

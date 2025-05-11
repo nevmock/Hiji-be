@@ -1,11 +1,9 @@
 import BaseError from "../../base_classes/base-error.js";
 import User from "../../models/user.js";
 import { generateVerifEmail } from "../../utils/bodyEmail.js";
-import generateToken from "../../utils/generateToken.js";
 import sendEmail from "../../utils/sendEmail.js";
-import { parseJWT } from "../../utils/parseToken.js";
+import { parseJWT, generateToken } from "../../utils/jwtTokenConfig.js";
 import joi from "joi";
-import Bussiness from "../../models/bussiness.js";
 
 class AuthService {
     async login(username, password) {
@@ -44,9 +42,10 @@ class AuthService {
             throw BaseError.badRequest("Email not verified, Please check your email to verify your account.");
         }
 
-        const token = generateToken(user._id, "30d");
+        const accessToken = generateToken(user.id, "1d");
+        const refreshToken = generateToken(user.id, "365d");
 
-        return token;
+        return { access_token: accessToken, refresh_token: refreshToken };
     }
 
     async register(data) {
@@ -106,9 +105,9 @@ class AuthService {
     }
 
     async verify(token) {
-        const { user_id } = parseJWT(token);
+        const decoded = parseJWT(token);
 
-        if (!user_id) {
+        if (!decoded) {
             return { status: 400, message: "Invalid token" };
         }
 
@@ -179,6 +178,24 @@ class AuthService {
         await user.save();
 
         return { message: "Password updated successfully" };
+    }
+    
+    async refreshToken(token) {
+        const decoded = parseJWT(token);
+
+        if (!decoded) {
+            throw BaseError.unauthorized("Invalid token");
+        }
+        
+        const user = await User.findById(decoded.id);
+
+        if (!user) {
+            throw BaseError.notFound("User not found");
+        }
+
+        const accessToken = generateToken(user.id, "1d");
+
+        return accessToken;
     }
 }
 

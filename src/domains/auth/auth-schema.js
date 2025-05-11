@@ -85,4 +85,12 @@ const changePasswordSchema = Joi.object({
         })
 });
 
-export { loginSchema, registerSchema, profileSchema, changePasswordSchema };
+const refreshTokenSchema = Joi.object({
+    refresh_token : Joi.string()
+        .required()
+        .messages({
+            "string.empty": "Refresh token is required."
+        }),
+})
+
+export { loginSchema, registerSchema, profileSchema, changePasswordSchema, refreshTokenSchema };

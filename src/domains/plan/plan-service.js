@@ -47,11 +47,12 @@ class PlanService {
             throw new BaseError.notFound("Plan not found");
         }
 
-        const updatedPlan = await Plan.updateOne({
-            _id: id
-        }, {
-            data
-        })
+        const updatedPlan = await Plan.findOneAndUpdate({ 
+            _id: id 
+        },
+            data,
+        { new: true }
+        );
 
         if (!updatedPlan){
             throw new Error("Failed to update plan");

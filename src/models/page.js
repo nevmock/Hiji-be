@@ -18,7 +18,7 @@ const PageSchema = new mongoose.Schema({
         type: String,
         default: null
     }
-});
+}, { timestamps: true });
 
 const Page = mongoose.model("page", PageSchema);
 

@@ -21,12 +21,7 @@ const PlanSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    }, {
-    timestamps: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-    }
-});
+}, { timestamps: true });
 
 const Plan = mongoose.model("plan", PlanSchema);
 
