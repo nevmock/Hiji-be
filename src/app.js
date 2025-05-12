@@ -21,6 +21,7 @@ import PagesRoutes from "./domains/web-builder/pages/pages-routes.js";
 import PlanRoutes from "./domains/plan/plan-routes.js";
 import subscriptionRoutes from "./domains/transaction/subscription/subscription-routes.js";
 import transactionRoutes from "./domains/transaction/transaction-routes.js";
+import courseRoutes from "./domains/course/course-routes.js";
 import pixelRoutes from "./domains/web-builder/pixel/pixel-routes.js";
 
 class ExpressApplication {
@@ -99,6 +100,9 @@ class ExpressApplication {
         this.app.use("/api/v1/plan", PlanRoutes);
         this.app.use("/api/v1/subscription", subscriptionRoutes);
         this.app.use("/api/v1/transaction", transactionRoutes);
+
+        this.app.use("/api/v1/course", courseRoutes);
+
     }
 
     configureAssets() {

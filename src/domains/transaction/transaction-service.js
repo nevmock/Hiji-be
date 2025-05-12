@@ -18,9 +18,10 @@ class TransactionServices {
         if (data.metadata.type == 'subscription'){
             return await subscriptionService.updateSubscriptionTransaction(data);
         }
-
+        
         return true;
-    }  
+    }
+
 }
 
 export default new TransactionServices();
