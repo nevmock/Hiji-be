@@ -20,7 +20,7 @@ const CourseSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['draft', 'publish'],
-        default: null
+        default: 'draft'
     },
 }, { timestamps: true });
 

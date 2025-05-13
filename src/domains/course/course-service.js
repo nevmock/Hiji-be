@@ -20,9 +20,8 @@ class CourseService {
         return course;
     }
 
-    async create({slug, title,  description, thumbnail_uri, status }) {
-        const course = new Course({ slug, title,description, thumbnail_uri,status});
-
+    async create({slug, title,  description, thumbnail_uri}) {
+        const course = new Course({ slug, title,description, thumbnail_uri});
         const createdCourse = await course.save();
 
         if (!createdCourse) {

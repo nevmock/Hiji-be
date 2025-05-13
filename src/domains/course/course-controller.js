@@ -23,9 +23,8 @@ class CourseController {
     }
 
     async create(req, res) {
-        const { slug, title, description, thumbnail_uri, status } = req.body;
-
-        const course = await CourseService.create({slug, title, description, thumbnail_uri, status });
+        const { slug, title, description, thumbnail_uri} = req.body;
+        const course = await CourseService.create({slug, title, description, thumbnail_uri});
 
         return createdResponse(res, course);
     }

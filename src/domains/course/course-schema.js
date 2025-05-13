@@ -21,12 +21,6 @@ const createCourseSchema = Joi.object({
         .messages({
             "string.empty": "thumbnail_uri is required."
         }),
-    status: Joi.string()
-        .required().valid('draft', 'publish')
-        .messages({
-            "string.empty": "Status is required.",
-            "any.only": "Status must be either 'draft' or 'publish'."
-        }),
 });
 
 
