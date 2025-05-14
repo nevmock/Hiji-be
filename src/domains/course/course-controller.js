@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import BaseError from "../../base_classes/base-error.js";
 
 import CourseService from "./course-service.js";
