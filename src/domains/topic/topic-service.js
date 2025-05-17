@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 import BaseError from "../../base_classes/base-error.js";
 import Topic from "../../models/topic.js";
 import courseService from "../course/course-service.js";
+import lectureService from "../lecture/lecture-service.js";
 
-const lecturer_id_test = new mongoose.Types.ObjectId();
+// const lecturer_id_test = new mongoose.Types.ObjectId();
 class TopicService {
     async get() {
         const topics = await Topic.find({});
@@ -17,13 +18,17 @@ class TopicService {
         return topic;
     }
 
-    async create({ course_id, slug, title, description, thumbnail_uri, video_uri, price }) {
+    async create({ course_id, slug, title, description, thumbnail_uri, video_uri, lecture_id ,price }) {
         const courseId = await courseService.getById(course_id);
         if (!courseId) {
             throw BaseError.notFound("Course not found");
         }
-        const lecturer_id = lecturer_id_test;
-        const topic = new Topic({ course_id, slug, title, description, thumbnail_uri, video_uri,lecturer_id ,price });
+        const lecturer_id = await lectureService.getById(lecture_id);
+        if (!lecturer_id) {
+            throw BaseError.notFound("Lecture not found");
+        }
+        // const lecturer_id = lecturer_id_test;
+        const topic = new Topic({ course_id, slug, title, description, thumbnail_uri, video_uri, lecturer_id ,price });
         const createdTopic = await topic.save();
         if (!createdTopic) {
             throw new Error("Failed to create topic");

@@ -24,6 +24,7 @@ import transactionRoutes from "./domains/transaction/transaction-routes.js";
 import courseRoutes from "./domains/course/course-routes.js";
 import pixelRoutes from "./domains/web-builder/pixel/pixel-routes.js";
 import topicRoutes from "./domains/topic/topic-routes.js";
+import lectureRoutes from "./domains/lecture/lecture-routes.js";
 
 class ExpressApplication {
     app;
@@ -104,6 +105,7 @@ class ExpressApplication {
 
         this.app.use("/api/v1/course", courseRoutes);
         this.app.use("/api/v1/topic", topicRoutes);
+        this.app.use("/api/v1/lecture", lectureRoutes);
 
     }
 

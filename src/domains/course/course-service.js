@@ -73,6 +73,9 @@ class CourseService {
             throw new Error("Failed to delete course");
         }
         await topicService.deleteByCourseId(id);
+        return {
+            message: "Course deleted successfully"
+        }
     }
 }
 

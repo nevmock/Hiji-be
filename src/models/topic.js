@@ -28,7 +28,7 @@ const TopicSchema = new mongoose.Schema({
     },
     lecturer_id: {
         type: mongoose.Schema.Types.ObjectId,
-        // ref: "lecturer",
+        ref: "lecture",
         required: true
     },
     price: {

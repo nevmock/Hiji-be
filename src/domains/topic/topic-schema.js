@@ -35,6 +35,15 @@ const topicCreateSchema = Joi.object({
         .messages({
             'any.required': 'video_uri is required'
         }),
+    lecture_id: Joi.string()
+        .length(24)
+        .hex()
+        .required()
+        .messages({
+            'string.length': 'lecture_id must be 24 characters',
+            'string.hex': 'lecture_id must be a valid hex string',
+            'any.required': 'lecture_id is required'
+        }),
     price: Joi.number()
         .required()
         .messages({
