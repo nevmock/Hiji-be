@@ -1,13 +1,26 @@
-import axios from 'axios';
 import BaseError from '../../base_classes/base-error.js';
 
 import Course from '../../models/course.js';
+import Topic from '../../models/topic.js';
+import topicService from '../topic/topic-service.js';
 
 class CourseService {
     async get(){
-        const cuourses = await Course.find({});
-
-        return cuourses;
+        let courses = await Course.find({});
+        const topic = await topicService.get();
+        // for (let index = 0; index < courses.length; index++) {
+        //     const course = courses[index];
+        //     const topicTotal = topic.filter((topic) => topic.course_id.toString() === course._id.toString());
+        //     courses[index] = {
+        //         course: course,
+        //         topic_course: topicTotal,
+        //     }
+        // }
+        courses = courses.map(course => ({
+            course,
+            topic_course: topic.filter(topic => topic.course_id.toString() === course._id.toString())
+        }));
+        return courses;
     }
 
     async getById(id){
@@ -49,20 +62,17 @@ class CourseService {
     }
 
     async delete(id){
-        let course = await this.getById(id);
+        const course = await Course.findById(id);
         if (!course) {
-            throw new Error("Course not found");
-        } 
-
-        course = await Course.deleteOne({
-            _id: course._id
-        })
-
-        if (!course) {
+            throw BaseError.notFound("Course not found");
+        }
+        const courseDelete = await Course.deleteOne({
+            _id: id
+        });
+        if (!courseDelete) {
             throw new Error("Failed to delete course");
         }
-
-
+        await topicService.deleteByCourseId(id);
         return {
             message: "Course deleted successfully"
         }
