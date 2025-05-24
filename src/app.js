@@ -25,6 +25,7 @@ import courseRoutes from "./domains/course/course-routes.js";
 import pixelRoutes from "./domains/web-builder/pixel/pixel-routes.js";
 import topicRoutes from "./domains/topic/topic-routes.js";
 import lectureRoutes from "./domains/lecture/lecture-routes.js";
+import corsOptions from "./config/cors.js";
 
 class ExpressApplication {
     app;
@@ -36,7 +37,7 @@ class ExpressApplication {
 
         this.app.use(express.json({ type: "application/json" }));
         this.app.use(express.urlencoded({ extended: false }));
-        this.app.use(cors());
+        this.app.use(cors(corsOptions));
         //  __init__
         this.configureAssets();
         this.setupRoute();
@@ -50,7 +51,7 @@ class ExpressApplication {
             process.env.NODE_ENV === "development" ? morgan("dev") : "",
             compression(),
             helmet(),
-            cors(),
+            // cors(),
         ]);
 
         this.fileStorage = multer.diskStorage({
