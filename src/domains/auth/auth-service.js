@@ -111,7 +111,7 @@ class AuthService {
             return { status: 400, message: "Invalid token" };
         }
 
-        const user = await User.findById(user_id);
+        const user = await User.findById(decoded.user_id);
 
         if (!user) {
             return { status: 400, message: "User Not Found" }
