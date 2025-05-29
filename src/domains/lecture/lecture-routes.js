@@ -6,10 +6,12 @@ import BaseRoutes from "../../base_classes/base-routes.js";
 import { lectureCreateSchema, lectureUpdateSchema } from "./lecture-schema.js";
 
 
+
+
 class LectureRoutes extends BaseRoutes {
     routes() {
-        this.router.get("/", [
-            
+        this.router.get("/", [   
+    
             tryCatch(lectureController.index)
         ]);
         this.router.get("/:id", [

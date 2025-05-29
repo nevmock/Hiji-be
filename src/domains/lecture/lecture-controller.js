@@ -52,5 +52,4 @@ class LectureController {
         return successResponse(res, lecture);
     }
 }
-
 export default new LectureController();

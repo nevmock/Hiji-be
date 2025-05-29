@@ -1,7 +1,7 @@
 import BaseError from '../../base_classes/base-error.js';
 
 import Course from '../../models/course.js';
-import Topic from '../../models/topic.js';
+
 import topicService from '../topic/topic-service.js';
 
 class CourseService {

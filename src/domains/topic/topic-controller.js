@@ -2,6 +2,7 @@ import BaseError from "../../base_classes/base-error.js";
 
 import TopicService from "./topic-service.js";
 import { successResponse, createdResponse} from "../../utils/response.js";
+import lessonService from "../lesson/lesson-service.js";
 
 // function isValidObjectId(id) {
 //   return mongoose.Types.ObjectId.isValid(id) && String(new mongoose.Types.ObjectId(id)) === id;
@@ -28,6 +29,15 @@ class TopicController {
         }
 
         return successResponse(res, topic);
+    }
+
+    async showByTopicId(req, res){
+        const { topicId} = req.params;
+        const lesson = await lessonService.getByTopicId(topicId);
+        if (!lesson) {
+            throw BaseError.notFound("Lessons not found for this topic");
+        }
+        return successResponse(res, lesson);
     }
 
     async create(req, res) {

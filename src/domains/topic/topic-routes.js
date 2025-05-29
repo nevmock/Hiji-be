@@ -12,6 +12,9 @@ class TopicRoutes extends BaseRoutes {
         this.router.get('/:id', [
             tryCatch(TopicController.show)
         ]);
+        this.router.get('/lesson/:topicId', [
+            tryCatch(TopicController.showByTopicId)
+        ]);
         this.router.post('/', [
             validateCredentials(topicCreateSchema),
             tryCatch(TopicController.create)
