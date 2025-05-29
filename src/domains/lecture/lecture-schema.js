@@ -1,5 +1,7 @@
 import Joi from "joi";
 
+
+
 const lectureCreateSchema = Joi.object({
     name: Joi.string()
         .required()
@@ -9,7 +11,7 @@ const lectureCreateSchema = Joi.object({
     }),
 
     current_job_position: Joi.string()
-        .required()
+        .required()     
         .messages({
             'any.required': 'current_job_position is required',
             'string.base': 'current_job_position must be a string'

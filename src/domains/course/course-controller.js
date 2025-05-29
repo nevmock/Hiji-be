@@ -33,7 +33,7 @@ class CourseController {
         
 
         const { slug, title, description, thumbnail_uri, status } = req.body;
-
+        
         const course = await CourseService.update(id,{slug, title, description, thumbnail_uri, status });
 
         if (!course) {

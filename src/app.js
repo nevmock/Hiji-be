@@ -26,6 +26,7 @@ import pixelRoutes from "./domains/web-builder/pixel/pixel-routes.js";
 import topicRoutes from "./domains/topic/topic-routes.js";
 import lectureRoutes from "./domains/lecture/lecture-routes.js";
 import corsOptions from "./config/cors.js";
+import lessonRoutes from "./domains/lesson/lesson-routes.js";
 
 class ExpressApplication {
     app;
@@ -106,6 +107,7 @@ class ExpressApplication {
 
         this.app.use("/api/v1/course", courseRoutes);
         this.app.use("/api/v1/topic", topicRoutes);
+        this.app.use("/api/v1/lesson", lessonRoutes);
         this.app.use("/api/v1/lecture", lectureRoutes);
 
     }
